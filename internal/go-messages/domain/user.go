@@ -38,6 +38,10 @@ func (u User) Name() Name {
 	return u.name
 }
 
+func (u User) IsZero() bool {
+	return u == User{}
+}
+
 type Name struct {
 	s string
 }

@@ -1,10 +1,14 @@
 package domain
 
-import "errors"
+import (
+	"github.com/pkg/errors"
+)
 
 type Chat struct {
-	title Title
-	users []User
+	uuid     UUID
+	title    Title
+	users    []User
+	messages []Message
 }
 
 func NewChat(title Title, users []User) (Chat, error) {
@@ -30,12 +34,40 @@ func MustNewChat(title Title, users []User) Chat {
 	return chat
 }
 
+func (c Chat) UUID() UUID {
+	return c.uuid
+}
+
 func (c Chat) Title() Title {
 	return c.title
 }
 
 func (c Chat) Users() []User {
 	return c.users
+}
+
+func (c Chat) HasUser(user User) bool {
+	for _, u := range c.Users() {
+		if u.UUID() == user.UUID() {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (c *Chat) AddMessage(message Message) error {
+	if !c.HasUser(message.Author()) {
+		return errors.Errorf(
+			"user %s with ID %s is not participant of this chat",
+			message.Author().Name(),
+			message.Author().UUID().String(),
+		)
+	}
+
+	c.messages = append(c.messages, message)
+
+	return nil
 }
 
 type Title struct {
