@@ -30,6 +30,10 @@ func BuildService(ctx context.Context) (*service.Service, error) {
 
 	handlers := http.NewHandlers(sseRouter)
 	httpRouter := http.NewHTTPRouter(logger, handlers)
+	messageRouter, err := NewMessageRouter(watermillAdapter)
+	if err != nil {
+		return nil, err
+	}
 
-	return service.NewService(sseRouter, httpRouter, goChannel)
+	return service.NewService(sseRouter, httpRouter, messageRouter)
 }
