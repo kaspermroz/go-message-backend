@@ -24,8 +24,12 @@ func BuildService(ctx context.Context) (*service.Service, error) {
 	}
 
 	sseRouter, err := NewSSERouter(watermillAdapter, goChannel)
+	if err != nil {
+		return nil, err
+	}
+
 	handlers := http.NewHandlers(sseRouter)
 	httpRouter := http.NewHTTPRouter(logger, handlers)
 
-	return service.NewService(sseRouter, httpRouter)
+	return service.NewService(sseRouter, httpRouter, goChannel)
 }
