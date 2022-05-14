@@ -3,6 +3,7 @@ package pubsub
 import (
 	"context"
 	"encoding/json"
+	"time"
 
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill/message"
@@ -50,5 +51,24 @@ func (h MessageSentHandler) Handle(msg *message.Message) ([]*message.Message, er
 		return nil, err
 	}
 
-	return []*message.Message{}, nil
+	chatUpdated, err := h.createChatUpdatedEvent(chatID)
+	if err != nil {
+		return nil, err
+	}
+
+	return []*message.Message{chatUpdated}, nil
+}
+
+func (h MessageSentHandler) createChatUpdatedEvent(chatID domain.UUID) (*message.Message, error) {
+	chatUpdated := ChatUpdated{
+		ChatId:    chatID.String(),
+		UpdatedAt: time.Now(),
+	}
+
+	payload, err := json.Marshal(chatUpdated)
+	if err != nil {
+		return nil, err
+	}
+
+	return message.NewMessage(watermill.NewUUID(), payload), nil
 }

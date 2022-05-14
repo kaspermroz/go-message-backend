@@ -46,9 +46,9 @@ func (c Chat) Users() []User {
 	return c.users
 }
 
-func (c Chat) HasUser(user User) bool {
+func (c Chat) HasUser(userID UUID) bool {
 	for _, u := range c.Users() {
-		if u.UUID() == user.UUID() {
+		if u.UUID() == userID {
 			return true
 		}
 	}
@@ -57,11 +57,10 @@ func (c Chat) HasUser(user User) bool {
 }
 
 func (c *Chat) AddMessage(message Message) error {
-	if !c.HasUser(message.Author()) {
+	if !c.HasUser(message.AuthorID()) {
 		return errors.Errorf(
-			"user %s with ID %s is not participant of this chat",
-			message.Author().Name(),
-			message.Author().UUID().String(),
+			"userwith ID %s is not participant of this chat",
+			message.AuthorID(),
 		)
 	}
 

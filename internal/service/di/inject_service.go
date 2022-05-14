@@ -2,7 +2,9 @@ package di
 
 import (
 	"context"
+	"github.com/kaspermroz/go-message-backend/internal/go-messages/adapters/chat"
 
+	appctx "github.com/kaspermroz/go-message-backend/internal/go-messages/app"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/pubsub"
 	"github.com/kaspermroz/go-message-backend/internal/service"
@@ -12,29 +14,38 @@ import (
 type ProductionApplication struct {
 }
 
-func BuildService(ctx context.Context) (*service.Service, error) {
+func BuildService(ctx context.Context) (*service.Service, context.Context, error) {
 	config, err := NewConfig()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	logger := NewLogger(config)
 	watermillAdapter := log.NewWatermillAdapter(logger)
 	goChannel, err := NewGoChannel(watermillAdapter)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	sseRouter, err := NewSSERouter(watermillAdapter, goChannel)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	handlers := http.NewHandlers(sseRouter)
 	httpRouter := http.NewHTTPRouter(logger, handlers)
-	messageRouter, err := pubsub.NewMessageRouter(watermillAdapter)
+	chatRepository := chat.NewRepositoryInMemory()
+	application := BuildApplication(chatRepository)
+	ctxWithApp := appctx.SetApplicationToCtx(ctx, application)
+	eventHandlers := pubsub.NewEventHandlers(ctxWithApp, watermillAdapter)
+	messageRouter, err := pubsub.NewMessageRouter(watermillAdapter, eventHandlers, goChannel)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return service.NewService(sseRouter, httpRouter, messageRouter)
+	svc, err := service.NewService(sseRouter, httpRouter, messageRouter)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return svc, ctxWithApp, err
 }

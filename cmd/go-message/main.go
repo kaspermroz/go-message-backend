@@ -8,12 +8,12 @@ import (
 
 func main() {
 	ctx := context.Background()
-	s, err := di.BuildService(ctx)
+	s, appctx, err := di.BuildService(ctx)
 	if err != nil {
 		panic(err.(interface{}))
 	}
 
-	if err := s.Run(ctx); err != nil {
+	if err := s.Run(appctx); err != nil {
 		panic(err.(interface{}))
 	}
 

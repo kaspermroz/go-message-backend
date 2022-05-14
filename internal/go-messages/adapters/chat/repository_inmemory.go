@@ -12,6 +12,12 @@ type RepositoryInMemory struct {
 	chats map[domain.UUID]domain.Chat
 }
 
+func NewRepositoryInMemory() RepositoryInMemory {
+	return RepositoryInMemory{
+		chats: make(map[domain.UUID]domain.Chat),
+	}
+}
+
 func (r RepositoryInMemory) ChatByID(_ context.Context, chatID domain.UUID) (domain.Chat, error) {
 	chat, ok := r.chats[chatID]
 	if !ok {
