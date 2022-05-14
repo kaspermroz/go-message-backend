@@ -3,11 +3,11 @@ package domain
 import "errors"
 
 type Message struct {
-	author User
-	text   Text
+	authorId UUID
+	text     Text
 }
 
-func NewMessage(chatID UUID, author User, text Text) (Message, error) {
+func NewMessage(author UUID, text Text) (Message, error) {
 	if author.IsZero() {
 		return Message{}, errors.New("user cannot be empty")
 	}
@@ -17,13 +17,13 @@ func NewMessage(chatID UUID, author User, text Text) (Message, error) {
 	}
 
 	return Message{
-		author: author,
-		text:   text,
+		authorId: author,
+		text:     text,
 	}, nil
 }
 
-func (m Message) Author() User {
-	return m.author
+func (m Message) AuthorID() UUID {
+	return m.authorId
 }
 
 func (m Message) Text() Text {

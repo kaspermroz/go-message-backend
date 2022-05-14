@@ -10,7 +10,7 @@ type App struct {
 }
 
 type Commands struct {
-	SendMessage commands.SendMessageHandler
+	UpdateChat commands.UpdateChatHandler
 }
 
 type Queries struct{}

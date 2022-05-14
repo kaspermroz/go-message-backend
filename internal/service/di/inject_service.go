@@ -2,10 +2,11 @@ package di
 
 import (
 	"context"
-	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http"
-	"github.com/kaspermroz/go-message-backend/internal/service/log"
 
+	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http"
+	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/pubsub"
 	"github.com/kaspermroz/go-message-backend/internal/service"
+	"github.com/kaspermroz/go-message-backend/internal/service/log"
 )
 
 type ProductionApplication struct {
@@ -30,7 +31,7 @@ func BuildService(ctx context.Context) (*service.Service, error) {
 
 	handlers := http.NewHandlers(sseRouter)
 	httpRouter := http.NewHTTPRouter(logger, handlers)
-	messageRouter, err := NewMessageRouter(watermillAdapter)
+	messageRouter, err := pubsub.NewMessageRouter(watermillAdapter)
 	if err != nil {
 		return nil, err
 	}

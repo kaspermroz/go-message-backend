@@ -11,32 +11,32 @@ type ChatRepository interface {
 	UpdateChat(ctx context.Context, chat domain.Chat) error
 }
 
-type SendMessageHandler interface {
-	Handle(ctx context.Context, chatID domain.UUID, message domain.Message) error
+type UpdateChatHandler interface {
+	Handle(ctx context.Context, cmd UpdateChat) error
 }
 
-type SendMessage struct {
+type UpdateChat struct {
 	ChatUUID domain.UUID
 	Message  domain.Message
 }
 
-type sendMessageHandler struct {
+type updateChatHandler struct {
 	repository ChatRepository
 }
 
-func NewSendMessageHandler(repository ChatRepository) SendMessageHandler {
-	return &sendMessageHandler{
+func NewUpdateChatHandler(repository ChatRepository) UpdateChatHandler {
+	return &updateChatHandler{
 		repository: repository,
 	}
 }
 
-func (h sendMessageHandler) Handle(ctx context.Context, chatID domain.UUID, message domain.Message) error {
-	chat, err := h.repository.ChatByID(ctx, chatID)
+func (h updateChatHandler) Handle(ctx context.Context, cmd UpdateChat) error {
+	chat, err := h.repository.ChatByID(ctx, cmd.ChatUUID)
 	if err != nil {
 		return err
 	}
 
-	err = chat.AddMessage(message)
+	err = chat.AddMessage(cmd.Message)
 	if err != nil {
 		return err
 	}
