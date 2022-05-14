@@ -31,8 +31,6 @@ func BuildService(ctx context.Context) (*service.Service, context.Context, error
 		return nil, nil, err
 	}
 
-	handlers := http.NewHandlers(sseRouter)
-	httpRouter := http.NewHTTPRouter(logger, handlers)
 	chatRepository := chat.NewRepositoryInMemory()
 	application := BuildApplication(chatRepository)
 	ctxWithApp := appctx.SetApplicationToCtx(ctx, application)
@@ -41,6 +39,9 @@ func BuildService(ctx context.Context) (*service.Service, context.Context, error
 	if err != nil {
 		return nil, nil, err
 	}
+
+	handlers := http.NewHandlers(sseRouter, chatRepository, watermillAdapter)
+	httpRouter := http.NewHTTPRouter(logger, handlers)
 
 	svc, err := service.NewService(sseRouter, httpRouter, messageRouter)
 	if err != nil {

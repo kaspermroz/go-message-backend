@@ -1,16 +1,17 @@
 package http
 
 import (
+	"github.com/ThreeDotsLabs/watermill"
+
 	watermillHttp "github.com/ThreeDotsLabs/watermill-http/pkg/http"
-	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http/test"
 )
 
 type RouterHandlers struct {
-	Test test.SSEHandler
+	ChatUpdated ChatUpdatedSSEHandler
 }
 
-func NewHandlers(sseRouter *watermillHttp.SSERouter) RouterHandlers {
+func NewHandlers(sseRouter *watermillHttp.SSERouter, repository ChatRepository, logger watermill.LoggerAdapter) RouterHandlers {
 	return RouterHandlers{
-		Test: test.NewSSEHandler(sseRouter),
+		ChatUpdated: NewChatUpdatedSSEHandler(sseRouter, repository, logger),
 	}
 }

@@ -1,0 +1,20 @@
+package http
+
+import "github.com/kaspermroz/go-message-backend/internal/go-messages/domain"
+
+func mapChatToTransport(chat domain.Chat) Chat {
+	var messages []Message
+
+	for _, m := range chat.Messages() {
+		messages = append(messages, Message{
+			AuthorId: m.AuthorID().String(),
+			Text:     m.Text().String(),
+		})
+	}
+
+	return Chat{
+		UUID:     chat.UUID().String(),
+		Title:    chat.Title().String(),
+		Messages: messages,
+	}
+}

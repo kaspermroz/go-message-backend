@@ -13,8 +13,19 @@ type RepositoryInMemory struct {
 }
 
 func NewRepositoryInMemory() RepositoryInMemory {
+	// TODO remove
+	chats := make(map[domain.UUID]domain.Chat)
+	chats[domain.MustNewUUID("test")] = domain.MustNewChat(
+		domain.MustNewUUID("test"),
+		domain.MustNewTitle("test chat"),
+		[]domain.User{
+			domain.MustNewUser(
+				domain.MustNewUUID("2137"),
+				domain.MustNewName("test-user")),
+		})
+
 	return RepositoryInMemory{
-		chats: make(map[domain.UUID]domain.Chat),
+		chats,
 	}
 }
 

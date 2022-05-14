@@ -6,8 +6,6 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 	"github.com/sirupsen/logrus"
-
-	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http/test"
 )
 
 func NewHTTPRouter(
@@ -23,12 +21,12 @@ func routes(
 	handlers RouterHandlers,
 ) func(r chi.Router) {
 	return func(r chi.Router) {
-		r.Mount("/test", getTestRoute(handlers.Test))
+		r.Mount("/chats/{chat_id}", getChatUpdatedRoute(handlers.ChatUpdated))
 	}
 
 }
 
-func getTestRoute(test test.SSEHandler) *chi.Mux {
+func getChatUpdatedRoute(chatUpdated ChatUpdatedSSEHandler) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(cors.Handler(cors.Options{
 		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
@@ -40,7 +38,7 @@ func getTestRoute(test test.SSEHandler) *chi.Mux {
 		AllowCredentials: true,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
-	r.Get("/", test.TestHandler)
+	r.Get("/", chatUpdated.ChatUpdated)
 
 	return r
 }

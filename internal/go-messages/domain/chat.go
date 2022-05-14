@@ -11,7 +11,7 @@ type Chat struct {
 	messages []Message
 }
 
-func NewChat(title Title, users []User) (Chat, error) {
+func NewChat(uuid UUID, title Title, users []User) (Chat, error) {
 	if title.IsZero() {
 		return Chat{}, errors.New("title cannot be empty")
 	}
@@ -20,13 +20,14 @@ func NewChat(title Title, users []User) (Chat, error) {
 	}
 
 	return Chat{
+		uuid:  uuid,
 		title: title,
 		users: users,
 	}, nil
 }
 
-func MustNewChat(title Title, users []User) Chat {
-	chat, err := NewChat(title, users)
+func MustNewChat(uuid UUID, title Title, users []User) Chat {
+	chat, err := NewChat(uuid, title, users)
 	if err != nil {
 		panic(err.(interface{}))
 	}
@@ -44,6 +45,10 @@ func (c Chat) Title() Title {
 
 func (c Chat) Users() []User {
 	return c.users
+}
+
+func (c Chat) Messages() []Message {
+	return c.messages
 }
 
 func (c Chat) HasUser(userID UUID) bool {

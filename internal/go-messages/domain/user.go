@@ -46,6 +46,10 @@ type Name struct {
 	s string
 }
 
+func MustNewName(s string) Name {
+	return Name{s}
+}
+
 func (n Name) String() string {
 	return n.s
 }

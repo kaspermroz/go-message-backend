@@ -1,6 +1,4 @@
-package types
-
-import "net/http"
+package http
 
 // ErrorMessage defines model for ErrorMessage.
 type ErrorMessage struct {
@@ -11,10 +9,13 @@ type ErrorMessage struct {
 	Status string `json:"status"`
 }
 
-type Test struct {
-	Body string `json:"body"`
+type Chat struct {
+	UUID     string    `json:"uuid"`
+	Title    string    `json:"title"`
+	Messages []Message `json:"messages"`
 }
 
-func (t Test) Render(w http.ResponseWriter, r *http.Request) error {
-	return nil
+type Message struct {
+	AuthorId string `json:"author_id"`
+	Text     string `json:"text"`
 }
