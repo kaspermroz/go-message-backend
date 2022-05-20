@@ -23,3 +23,8 @@ type Message struct {
 type SendMessageRequest struct {
 	Message Message `json:"message"`
 }
+
+type CreateChatRequest struct {
+	Name    string   `json:"name"`
+	UserIDs []string `json:"user_ids"` // array of User uuids
+}

@@ -15,6 +15,11 @@ type ChatUpdated struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type ChatCreated struct {
+	ChatId    string    `json:"chat_id"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 // Transport models
 
 type Message struct {

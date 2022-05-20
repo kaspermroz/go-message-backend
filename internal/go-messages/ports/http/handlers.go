@@ -11,6 +11,7 @@ import (
 type RouterHandlers struct {
 	ChatUpdated ChatUpdatedSSEHandler
 	SendMessage SendMessageHandler
+	CreateChat  CreateChatHandler
 }
 
 func NewHandlers(
@@ -23,5 +24,6 @@ func NewHandlers(
 	return RouterHandlers{
 		ChatUpdated: NewChatUpdatedSSEHandler(sseRouter, repository, logger),
 		SendMessage: NewSendMessageHandler(logger, pubsub, ctx),
+		CreateChat:  NewCreateChatHandler(logger, pubsub, ctx),
 	}
 }

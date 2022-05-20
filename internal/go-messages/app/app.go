@@ -11,6 +11,7 @@ type App struct {
 
 type Commands struct {
 	UpdateChat commands.UpdateChatHandler
+	CreateChat commands.CreateChatHandler
 }
 
 type Queries struct{}

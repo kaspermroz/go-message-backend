@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-chi/render"
 
-	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http/types"
+	types "github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http"
 )
 
 type ErrResponse struct {

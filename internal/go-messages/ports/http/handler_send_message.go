@@ -3,16 +3,18 @@ package http
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+	"time"
+
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill/message"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
+
 	appctx "github.com/kaspermroz/go-message-backend/internal/go-messages/app"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/app/commands"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/domain"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/pubsub"
-	"net/http"
-	"time"
 )
 
 type SendMessageHandler struct {
@@ -67,7 +69,7 @@ func (h SendMessageHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		Message:  msg,
 	})
 	if err != nil {
-		h.logger.Error("could not get send message", err, nil)
+		h.logger.Error("could not send message", err, nil)
 		w.WriteHeader(500)
 		return
 	}

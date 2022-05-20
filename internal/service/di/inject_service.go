@@ -11,9 +11,6 @@ import (
 	"github.com/kaspermroz/go-message-backend/internal/service/log"
 )
 
-type ProductionApplication struct {
-}
-
 func BuildService(ctx context.Context) (*service.Service, context.Context, error) {
 	config, err := NewConfig()
 	if err != nil {
