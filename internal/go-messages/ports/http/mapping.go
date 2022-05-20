@@ -18,3 +18,16 @@ func mapChatToTransport(chat domain.Chat) Chat {
 		Messages: messages,
 	}
 }
+
+func mapMessageToDomain(msg Message) (domain.Message, error) {
+	authorUUID, err := domain.NewUUID(msg.AuthorId)
+	if err != nil {
+		return domain.Message{}, err
+	}
+	text, err := domain.NewText(msg.Text)
+	if err != nil {
+		return domain.Message{}, err
+	}
+
+	return domain.NewMessage(authorUUID, text)
+}

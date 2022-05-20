@@ -40,7 +40,7 @@ func BuildService(ctx context.Context) (*service.Service, context.Context, error
 		return nil, nil, err
 	}
 
-	handlers := http.NewHandlers(sseRouter, chatRepository, watermillAdapter)
+	handlers := http.NewHandlers(ctxWithApp, watermillAdapter, sseRouter, chatRepository, goChannel)
 	httpRouter := http.NewHTTPRouter(logger, handlers)
 
 	svc, err := service.NewService(sseRouter, httpRouter, messageRouter)

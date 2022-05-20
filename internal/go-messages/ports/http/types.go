@@ -19,3 +19,7 @@ type Message struct {
 	AuthorId string `json:"author_id"`
 	Text     string `json:"text"`
 }
+
+type SendMessageRequest struct {
+	Message Message `json:"message"`
+}
