@@ -37,6 +37,18 @@ func (r RepositoryInMemory) ChatByID(_ context.Context, chatID domain.UUID) (dom
 	return chat, nil
 }
 
+func (r RepositoryInMemory) ChatsForUser(_ context.Context, userID domain.UUID) ([]domain.Chat, error) {
+	var chatsForUser []domain.Chat
+
+	for _, chat := range r.chats {
+		if chat.HasUser(userID) {
+			chatsForUser = append(chatsForUser, chat)
+		}
+	}
+
+	return chatsForUser, nil
+}
+
 func (r RepositoryInMemory) UpdateChat(_ context.Context, chat domain.Chat) error {
 	r.chats[chat.UUID()] = chat
 

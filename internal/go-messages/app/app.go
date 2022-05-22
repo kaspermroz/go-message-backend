@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/app/commands"
+	"github.com/kaspermroz/go-message-backend/internal/go-messages/app/queries"
 )
 
 type App struct {
@@ -14,4 +15,6 @@ type Commands struct {
 	CreateChat commands.CreateChatHandler
 }
 
-type Queries struct{}
+type Queries struct {
+	GetUserChats queries.GetUserChatsHandler
+}

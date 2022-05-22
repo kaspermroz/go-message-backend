@@ -9,6 +9,7 @@ import (
 type ChatRepository interface {
 	ChatByID(ctx context.Context, chatID domain.UUID) (domain.Chat, error)
 	UpdateChat(ctx context.Context, chat domain.Chat) error
+	ChatsForUser(ctx context.Context, userID domain.UUID) ([]domain.Chat, error)
 }
 
 type UpdateChatHandler interface {
