@@ -2,8 +2,9 @@ package di
 
 import (
 	"context"
-	"github.com/kaspermroz/go-message-backend/internal/go-messages/adapters/chat"
 
+	"github.com/kaspermroz/go-message-backend/internal/go-messages/adapters/chat"
+	"github.com/kaspermroz/go-message-backend/internal/go-messages/adapters/user"
 	appctx "github.com/kaspermroz/go-message-backend/internal/go-messages/app"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/http"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/pubsub"
@@ -29,7 +30,8 @@ func BuildService(ctx context.Context) (*service.Service, context.Context, error
 	}
 
 	chatRepository := chat.NewRepositoryInMemory()
-	application := BuildApplication(chatRepository)
+	userRepository := user.NewRepositoryInMemory()
+	application := BuildApplication(chatRepository, userRepository)
 	ctxWithApp := appctx.SetApplicationToCtx(ctx, application)
 	eventHandlers := pubsub.NewEventHandlers(ctxWithApp, watermillAdapter)
 	messageRouter, err := pubsub.NewMessageRouter(watermillAdapter, eventHandlers, goChannel)
