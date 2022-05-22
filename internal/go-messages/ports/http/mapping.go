@@ -31,3 +31,16 @@ func mapMessageToDomain(msg Message) (domain.Message, error) {
 
 	return domain.NewMessage(authorUUID, text)
 }
+
+func mapChatsToAllChatsProjection(chats []domain.Chat) []AllChatsProjectionChat {
+	projections := make([]AllChatsProjectionChat, len(chats))
+
+	for i, chat := range chats {
+		projections[i] = AllChatsProjectionChat{
+			Title:         chat.Title().String(),
+			MessagesCount: len(chat.Messages()),
+		}
+	}
+
+	return projections
+}

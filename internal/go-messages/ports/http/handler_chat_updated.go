@@ -22,7 +22,7 @@ type ChatRepository interface {
 }
 
 func NewChatUpdatedSSEHandler(sseRouter *watermillHttp.SSERouter, repository ChatRepository, logger watermill.LoggerAdapter) ChatUpdatedSSEHandler {
-	streamAdapter := streamAdapter{
+	streamAdapter := chatUpdatedStreamAdapter{
 		repository: repository,
 		logger:     logger,
 	}
@@ -32,12 +32,12 @@ func NewChatUpdatedSSEHandler(sseRouter *watermillHttp.SSERouter, repository Cha
 	}
 }
 
-type streamAdapter struct {
+type chatUpdatedStreamAdapter struct {
 	repository ChatRepository
 	logger     watermill.LoggerAdapter
 }
 
-func (a streamAdapter) GetResponse(w http.ResponseWriter, r *http.Request) (response interface{}, ok bool) {
+func (a chatUpdatedStreamAdapter) GetResponse(w http.ResponseWriter, r *http.Request) (response interface{}, ok bool) {
 	chatID := chi.URLParam(r, "chat_id")
 
 	chatUUID, err := domain.NewUUID(chatID)
@@ -60,6 +60,6 @@ func (a streamAdapter) GetResponse(w http.ResponseWriter, r *http.Request) (resp
 	return chat, true
 }
 
-func (a streamAdapter) Validate(r *http.Request, msg *message.Message) (ok bool) {
+func (a chatUpdatedStreamAdapter) Validate(r *http.Request, msg *message.Message) (ok bool) {
 	return true
 }
