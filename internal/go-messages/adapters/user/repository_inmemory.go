@@ -10,12 +10,10 @@ type RepositoryInMemory struct {
 }
 
 func NewRepositoryInMemory() RepositoryInMemory {
-	id := domain.MustNewUUID("2137")
-	user := domain.MustNewUser(id, domain.MustNewName("test-user"))
-
 	return RepositoryInMemory{
 		users: map[domain.UUID]domain.User{
-			id: user,
+			UserOneID: UserOne,
+			UserTwoID: UserTwo,
 		},
 	}
 }
