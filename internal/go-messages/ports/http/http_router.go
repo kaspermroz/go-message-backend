@@ -22,11 +22,9 @@ func routes(
 ) func(r chi.Router) {
 	return func(r chi.Router) {
 		r.Use(cors.Handler(cors.Options{
-			// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-			AllowedOrigins: []string{"*"},
-			// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+			AllowedOrigins:   []string{"*"},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token", "User-ID"},
 			ExposedHeaders:   []string{"Link"},
 			AllowCredentials: true,
 			MaxAge:           300, // Maximum value not ignored by any of major browsers
@@ -34,7 +32,7 @@ func routes(
 
 		r.Mount("/chats/{chat_id}", getChatUpdatedRoute(handlers.ChatUpdated))
 		r.Mount("/chats/{chat_id}/send", getSendMessageRoute(handlers.SendMessage))
-		r.Mount("/chats", getCreateChatRoute(handlers.CreateChat))
+		r.Mount("/chats", getCreateChatRoute(handlers.CreateChat, handlers.AllChatsUpdated))
 	}
 
 }
@@ -53,9 +51,9 @@ func getSendMessageRoute(sendMessage SendMessageHandler) *chi.Mux {
 	return r
 }
 
-func getCreateChatRoute(createChat CreateChatHandler) *chi.Mux {
+func getCreateChatRoute(createChat CreateChatHandler, allChatsUpdated AllChatsUpdatedSSEHandler) *chi.Mux {
 	r := chi.NewRouter()
 	r.Post("/", createChat.Handle)
-
+	r.Get("/", allChatsUpdated.AllChatsUpdated)
 	return r
 }

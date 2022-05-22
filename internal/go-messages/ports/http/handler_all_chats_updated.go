@@ -5,7 +5,6 @@ import (
 	"github.com/ThreeDotsLabs/watermill"
 	watermillHttp "github.com/ThreeDotsLabs/watermill-http/pkg/http"
 	"github.com/ThreeDotsLabs/watermill/message"
-	"github.com/go-chi/render"
 	appctx "github.com/kaspermroz/go-message-backend/internal/go-messages/app"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/domain"
 	"github.com/kaspermroz/go-message-backend/internal/go-messages/ports/pubsub"
@@ -37,8 +36,8 @@ func (a allChatsUpdatedStreamAdapter) GetResponse(w http.ResponseWriter, r *http
 		return nil, false
 	}
 
-	req := AllChatsUpdatedRequest{}
-	err = render.DecodeJSON(r.Body, &req)
+	req := AllChatsUpdatedRequest{UserID: r.Header.Get("User-ID")}
+
 	if err != nil {
 		a.logger.Error("could not parse request", err, nil)
 		return nil, false
