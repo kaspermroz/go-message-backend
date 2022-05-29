@@ -34,6 +34,7 @@ type AllChatsUpdatedRequest struct {
 }
 
 type AllChatsProjectionChat struct {
+	ChatID        string `json:"chat_id"`
 	Title         string `json:"title"`
 	MessagesCount int    `json:"messages_count"`
 }

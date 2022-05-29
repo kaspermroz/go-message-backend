@@ -37,6 +37,7 @@ func mapChatsToAllChatsProjection(chats []domain.Chat) []AllChatsProjectionChat 
 
 	for i, chat := range chats {
 		projections[i] = AllChatsProjectionChat{
+			ChatID:        chat.UUID().String(),
 			Title:         chat.Title().String(),
 			MessagesCount: len(chat.Messages()),
 		}
