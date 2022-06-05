@@ -1,6 +1,6 @@
-# fly.toml file generated for go-message-backend on 2022-06-05T12:15:27+02:00
+# fly.toml file generated for go-message on 2022-06-05T12:39:34+02:00
 
-app = "go-message-backend"
+app = "go-message"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
