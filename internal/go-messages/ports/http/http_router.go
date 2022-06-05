@@ -22,7 +22,7 @@ func routes(
 ) func(r chi.Router) {
 	return func(r chi.Router) {
 		r.Use(cors.Handler(cors.Options{
-			AllowedOrigins:   []string{"http://localhost:3000", "https://go-message.vercel.app/"},
+			AllowedOrigins:   []string{"http://localhost:3000", "https://go-message.vercel.app"},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token", "User-ID"},
 			ExposedHeaders:   []string{"Link"},
