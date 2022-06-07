@@ -33,10 +33,16 @@ type AllChatsUpdatedRequest struct {
 	UserID string `json:"user_id"`
 }
 
+type User struct {
+	UserID   string `json:"user_id"`
+	Username string `json:"username"`
+}
+
 type AllChatsProjectionChat struct {
 	ChatID        string `json:"chat_id"`
 	Title         string `json:"title"`
 	MessagesCount int    `json:"messages_count"`
+	Users         []User `json:"users"`
 }
 
 type AllChatsResponse struct {

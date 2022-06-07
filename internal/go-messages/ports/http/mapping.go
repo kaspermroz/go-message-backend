@@ -40,8 +40,22 @@ func mapChatsToAllChatsProjection(chats []domain.Chat) []AllChatsProjectionChat 
 			ChatID:        chat.UUID().String(),
 			Title:         chat.Title().String(),
 			MessagesCount: len(chat.Messages()),
+			Users:         mapUsersToTransport(chat.Users()),
 		}
 	}
 
 	return projections
+}
+
+func mapUsersToTransport(users []domain.User) []User {
+	var mappedUsers []User
+
+	for _, u := range users {
+		mappedUsers = append(mappedUsers, User{
+			UserID:   u.UUID().String(),
+			Username: u.Name().String(),
+		})
+	}
+
+	return mappedUsers
 }
