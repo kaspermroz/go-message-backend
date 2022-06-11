@@ -22,6 +22,12 @@ func NewRepositoryInMemory() RepositoryInMemory {
 			user.UserOne,
 			user.UserTwo,
 		})
+	chats[domain.MustNewUUID("e2e")] = domain.MustNewChat(
+		domain.MustNewUUID("e2e"),
+		domain.MustNewTitle("E2E Test Chat"),
+		[]domain.User{
+			user.E2EUser,
+		})
 
 	return RepositoryInMemory{
 		chats,
