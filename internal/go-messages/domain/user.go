@@ -46,6 +46,14 @@ type Name struct {
 	s string
 }
 
+func NewName(s string) (Name, error) {
+	if s == "" {
+		return Name{}, errors.New("name cannot be empty")
+	}
+
+	return Name{s}, nil
+}
+
 func MustNewName(s string) Name {
 	return Name{s}
 }
